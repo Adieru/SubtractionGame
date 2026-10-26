@@ -1,10 +1,12 @@
 import tkinter as tk
-from tkinter import ttk, simpledialog, PhotoImage, Frame
+from tkinter import ttk, simpledialog, PhotoImage, Frame, messagebox
 import random as rand
+import time
 
 #setting window
 window = tk.Tk()
-window.geometry("900x500")
+window.geometry("800x600")
+window.title("Game of Nim")
 
 my_label = ttk.Label(window, text="Game of Nim", font=("Arial", 25))
 my_label.pack(side=tk.TOP, fill=tk.Y, expand=False, pady=5)
@@ -12,8 +14,10 @@ my_label.pack(side=tk.TOP, fill=tk.Y, expand=False, pady=5)
 #giving initial values to vars
 stick_frame = Frame(window)
 play_buttons_frame = Frame(window) 
+
 stick_frame.pack()
 play_buttons_frame.pack()
+
 stick_image = PhotoImage(file = "matchStick.png")
 
 user_turns = 0
@@ -44,7 +48,7 @@ def reset_game():
     for each in range(num_Sticks):
 
         gametiles.append(tk.Button(stick_frame, image = stick_image,
-                                   height = 900 , width = 35, borderwidth = 0))
+                                   height = 300 , width = 35, borderwidth = 0))
 
         gametiles[each].config(command = lambda: remove_tile("user"))
 
@@ -81,6 +85,10 @@ def remove_tile(who):
         else:
             return False
 
+        if(current_tiles == 0):
+            conclude("user")
+            return 
+
     else:
         #Computer turn
         current_tiles -= 1
@@ -89,9 +97,6 @@ def remove_tile(who):
     user_turns = 0
 
     return True
-
-
-#player's turn
 
 #computer turn
 def computer_turn():
@@ -110,7 +115,29 @@ def computer_turn():
 
     for each in range(quantity):
         remove_tile("computer")
+        time.sleep(0.75)
 
+
+    return 
+
+
+#Concluding the game
+def conclude(who):
+    global window
+
+    if(who == "user"):
+        messagebox.showwarning("You Lost!")
+
+    else:
+        messagebox.showinfo("You won!")
+
+    response = messagebox.askyesno("Would you like to play again ?")
+
+    if(response):
+        reset_game()
+
+    else:
+        window.destroy()
 
     return 
 
