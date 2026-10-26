@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, simpledialog, PhotoImage, Frame
+import random as rand
 
 #setting window
 window = tk.Tk()
@@ -7,9 +8,6 @@ window.geometry("900x500")
 
 my_label = ttk.Label(window, text="Game of Nim", font=("Arial", 25))
 my_label.pack(side=tk.TOP, fill=tk.Y, expand=False, pady=5)
-
-
-
 
 #giving initial values to vars
 stick_frame = Frame(window)
@@ -72,6 +70,8 @@ def remove_tile(who):
     global maximum
     global current_tiles
 
+    global user_turns
+
     #checking if the player can return or not
     if(who == "user"):
         if(user_turns < maximum):
@@ -86,6 +86,7 @@ def remove_tile(who):
         current_tiles -= 1
         gametiles[current_tiles].destroy()
 
+    user_turns = 0
 
     return True
 
@@ -94,6 +95,23 @@ def remove_tile(who):
 
 #computer turn
 def computer_turn():
+
+    #variables used
+    global maximum
+    global current_tiles
+
+    quantity = current_tiles % (maximum + 1)
+
+    #incase of mod giving a 0 value
+    if(quantity == 0):
+
+        # take random
+        quantity = rand.randint(1, maximum)
+
+    for each in range(quantity):
+        remove_tile("computer")
+
+
     return 
 
 reset_game()
